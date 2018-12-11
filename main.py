@@ -5,19 +5,16 @@ from ui.menu import Menu
 #STARTING FUNCTIONALITY
 
 frame = Frame()
-#starting UI
 frame.clear()
 print(frame)
+print() # empty line before system boot
+
+frame.boot_system()
+
+frame.delete_last_lines(3)
 
 menu = Menu()
 
-employees = menu.get_employees()
-employee = menu.authenticate_process(employees)
-menu.init_menu(employee, employees)
+menu.authenticate_v2()
 
-
-
-
-print() 
-print()
-print()
+menu.init_menu()
