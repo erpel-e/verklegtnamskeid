@@ -1,0 +1,61 @@
+<div class="container">
+    <div class="card-header bg-info text-white">
+        <h4>
+            <i class="fas fa-car"></i> Search Car </h4>
+    </div>
+    <form method="get" id="search-form">
+        <div class="input-field">
+            <label for="from">Number:</label>
+            <input type="number" class="form-control" id="from-place" placeholder="Any" name="number" />
+        </div>
+        <section>
+            <label for="class">Car Type:</label>
+            <select class="cs-select cs-skin-border input-half">
+                <option value="" disabled selected>Any</option>
+                <option value="1">Sedan</option>
+                <option value="2">Saloon</option>
+            </select>
+        </section>
+        <section>
+            <label for="class">Price:</label>
+            <div class="wide">
+                <select class="cs-select cs-select-half cs-skin-border input-half" name="price">
+                    <option value="" disabled selected>any</option>
+                    <option value="1000">1.000</option>
+                    <option value="2000">2.000</option>
+                    <option value="3000">3.000</option>
+            </div>
+        </section>
+        <div class="col-xxs-12 col-xs-12 text-center">
+            <input type="hidden" name="search_filter" value="true">
+            <input type="submit" id="search-apa" value="Search">
+        </div>
+    </form>
+</div>
+
+$(document).ready(function() {
+    $('#search-form').on('submit', function(e) {
+        e.preventDefault();
+        var searchText = $('#search-form').val();
+        $.ajax({
+            url: '/cars/search_car/?search_filter=' + searchText,
+                type: 'GET',
+                success: function(resp) {
+                var newHtml = resp.data.map(d => {
+                    return `<div class="cars">
+                        <a href="/cars/${d.id}">
+                        <h4>${d.type}</h4>
+                        <p>${d.price}</p>
+                    </a>
+                    </div>`
+                });
+                $('.cars-index').html(newHtml.join(''));
+                $('.search-form').val( '');
+            },
+            error: function(xhr, ststus, error) {
+                console.log(error);
+            }
+        })
+
+    });
+});
